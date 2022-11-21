@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.school.model.enums.SubjectEnum;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -25,6 +26,8 @@ public class TeacherDto {
     private String email;
     @Min(value = 19, message = "Age can't be less than 19")
     private Integer age;
+
+    private SubjectEnum subject;
 
     private Set<StudentDto> students;
 }
