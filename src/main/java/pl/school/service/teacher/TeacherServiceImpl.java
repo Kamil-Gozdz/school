@@ -8,6 +8,7 @@ import pl.school.repository.TeacherRepository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,6 +68,6 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public List<TeacherDto> getAllTeachers() {
-        return null;
+        return teacherRepository.findAll().stream().map(teacherMapper::toDto).collect(Collectors.toList());
     }
 }

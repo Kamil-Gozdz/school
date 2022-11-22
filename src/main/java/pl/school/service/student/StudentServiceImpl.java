@@ -9,6 +9,7 @@ import pl.school.repository.StudentRepository;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,6 +73,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<StudentDto> getAllStudents() {
-        return null;
+        return studentRepository.findAll().stream().map(studentMapper::toDto).collect(Collectors.toList());
     }
 }
