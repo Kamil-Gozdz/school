@@ -15,7 +15,8 @@ public interface StudentService {
 
     void deleteStudent(Long id);
 
-    List<StudentDto> getAllStudents(Pageable pageable);
+    List<StudentDto> getAllStudents(Integer pageNumber,
+                                    Integer pageSize, String sortBy);
 
 
 }
