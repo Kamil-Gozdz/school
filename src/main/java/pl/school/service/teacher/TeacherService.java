@@ -15,5 +15,7 @@ public interface TeacherService {
 
     void deleteTeacher(Long id);
 
-    List<TeacherDto> getAllTeachers(Pageable pageable);
+    List<TeacherDto> getAllTeachers(Integer pageNumber,
+                                    Integer pageSize,
+                                    String sortBy);
 }

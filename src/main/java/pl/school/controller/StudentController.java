@@ -1,7 +1,6 @@
 package pl.school.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.school.model.dto.StudentDto;
 import pl.school.service.student.StudentService;
@@ -18,8 +17,11 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/all")
-    public List<StudentDto> getStudents(Pageable pageable) {
-        return studentService.getAllStudents(pageable);
+    public List<StudentDto> getStudents(@RequestParam(defaultValue = "1") Integer pageNumber,
+                                        @RequestParam(defaultValue = "2") Integer pageSize,
+                                        @RequestParam(defaultValue = "id") String sortBy) {
+
+        return studentService.getAllStudents(pageNumber,pageSize,sortBy);
     }
 
     @PostMapping("/post")

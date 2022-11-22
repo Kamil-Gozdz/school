@@ -18,8 +18,10 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @GetMapping("/all")
-    public List<TeacherDto> getTeachers(Pageable pageable) {
-        return teacherService.getAllTeachers(pageable);
+    public List<TeacherDto> getTeachers(@RequestParam(defaultValue = "1") Integer pageNumber,
+                                        @RequestParam(defaultValue = "2") Integer pageSize,
+                                        @RequestParam(defaultValue = "id") String sortBy) {
+        return teacherService.getAllTeachers(pageNumber,pageSize,sortBy);
     }
 
     @PostMapping("/post")
