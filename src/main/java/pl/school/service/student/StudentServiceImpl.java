@@ -1,9 +1,12 @@
 package pl.school.service.student;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.school.exception.exceptions.RecordNotFoundException;
 import pl.school.model.dto.StudentDto;
+import pl.school.model.entity.Student;
 import pl.school.model.mapper.StudentMapper;
 import pl.school.repository.StudentRepository;
 
@@ -73,7 +76,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDto> getAllStudents() {
-        return studentRepository.findAll().stream().map(studentMapper::toDto).collect(Collectors.toList());
+    public List<StudentDto> getAllStudents(Pageable pageable) {
+        Page<Student> students = studentRepository.findAll(pageable);
+        return students.getContent().stream().map(studentMapper::toDto).collect(Collectors.toList());
     }
 }

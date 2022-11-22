@@ -29,5 +29,4 @@ public class StudentDto {
     private FieldEnum field;
 
     private Set<TeacherDto> teachers;
-
 }
