@@ -1,9 +1,9 @@
 package pl.school.service.student;
 
+import org.springframework.data.domain.Pageable;
 import pl.school.model.dto.StudentDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StudentService {
 
@@ -15,7 +15,7 @@ public interface StudentService {
 
     void deleteStudent(Long id);
 
-    List<StudentDto> getAllStudents();
+    List<StudentDto> getAllStudents(Pageable pageable);
 
 
 }

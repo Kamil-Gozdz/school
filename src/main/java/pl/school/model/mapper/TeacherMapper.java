@@ -1,6 +1,6 @@
 package pl.school.model.mapper;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import pl.school.model.dto.StudentDto;
 import pl.school.model.dto.TeacherDto;
@@ -11,10 +11,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
 public class TeacherMapper {
 
     private final StudentMapper studentMapper;
+    public TeacherMapper(@Lazy StudentMapper studentMapper) {
+        this.studentMapper = studentMapper;
+    }
 
     public TeacherDto toDto(Teacher teacher) {
         return TeacherDto.builder()
@@ -31,6 +33,7 @@ public class TeacherMapper {
     private Set<StudentDto> getStudents(Set<Student> students) {
         return students.stream().map(studentMapper::toDto).collect(Collectors.toSet());
     }
+
     public Teacher toNewEntity(TeacherDto teacherDto) {
         return Teacher.builder()
                 .id(teacherDto.getId())
