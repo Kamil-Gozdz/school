@@ -1,9 +1,6 @@
 package pl.school.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.school.model.enums.SubjectEnum;
 
 import javax.validation.constraints.Email;
@@ -12,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

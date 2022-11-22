@@ -1,15 +1,13 @@
 package pl.school.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.school.model.enums.FieldEnum;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "students")
