@@ -2,6 +2,7 @@ package pl.school.service.student;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.school.exception.exceptions.RecordNotFoundException;
 import pl.school.model.dto.StudentDto;
 import pl.school.model.mapper.StudentMapper;
 import pl.school.repository.StudentRepository;
@@ -36,7 +37,7 @@ public class StudentServiceImpl implements StudentService {
             student.setField(studentDto.getField());
             student.setTeachers(studentMapper.toNewEntity(studentDto).getTeachers());
             return studentMapper.toDto(student);
-        }).orElseThrow(RuntimeException::new);
+        }).orElseThrow(() -> new RecordNotFoundException("Student",studentDto.getId()));
     }
 
     @Override
@@ -62,7 +63,7 @@ public class StudentServiceImpl implements StudentService {
                 student.setTeachers(studentMapper.toNewEntity(studentDto).getTeachers());
             }
             return studentMapper.toDto(student);
-        }).orElseThrow(RuntimeException::new);
+        }).orElseThrow(()->new RecordNotFoundException("Student",studentDto.getId()));
     }
 
     @Override
