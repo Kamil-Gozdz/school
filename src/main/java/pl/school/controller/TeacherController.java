@@ -3,6 +3,7 @@ package pl.school.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.school.model.dto.TeacherDto;
+import pl.school.model.dto.TeacherSearchCriteriaDto;
 import pl.school.service.teacher.TeacherService;
 
 import javax.validation.Valid;
@@ -51,5 +52,9 @@ public class TeacherController {
     @DeleteMapping("/delete/student/{id}")
     public TeacherDto deleteTeacherFromList(@RequestBody TeacherDto teacherDto, @PathVariable Long id) {
         return teacherService.removeStudentFromList(teacherDto, id);
+    }
+    @PostMapping("/search")
+    public List<TeacherDto> searchTeachersByCriteria(@RequestBody TeacherSearchCriteriaDto criteriaDto){
+        return teacherService.getTeachersByCriteria(criteriaDto);
     }
 }

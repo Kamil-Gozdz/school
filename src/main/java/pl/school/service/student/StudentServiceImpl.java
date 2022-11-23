@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.school.exception.exceptions.RecordNotFoundException;
 import pl.school.model.dto.StudentDto;
+import pl.school.model.dto.StudentSearchCriteriaDto;
 import pl.school.model.entity.Student;
 import pl.school.model.mapper.StudentMapper;
 import pl.school.repository.StudentRepository;
@@ -106,5 +108,12 @@ public class StudentServiceImpl implements StudentService {
                     .orElseThrow(() -> new RecordNotFoundException("Teacher", id)));
             return studentMapper.toDto(student);
         }).orElseThrow(() -> new RecordNotFoundException("Student", studentDto.getId()));
+    }
+
+    @Override
+    public List<StudentDto> getStudentsByCriteria(StudentSearchCriteriaDto criteriaDto) {
+        Specification<Student> specification = new StudentSpecification(criteriaDto);
+        List<Student> students = studentRepository.findAll(specification);
+        return  students.stream().map(studentMapper::toDto).collect(Collectors.toList());
     }
 }
