@@ -1,6 +1,9 @@
 package pl.school.service.student;
 
 import pl.school.model.dto.StudentDto;
+import pl.school.model.dto.StudentSearchCriteriaDto;
+import pl.school.model.dto.TeacherDto;
+import pl.school.model.dto.TeacherSearchCriteriaDto;
 
 import java.util.List;
 
@@ -20,4 +23,6 @@ public interface StudentService {
     StudentDto addTeacherToList(StudentDto studentDto, Long id);
 
     StudentDto removeTeacherFromList(StudentDto studentDto, Long id);
+
+    List<StudentDto> getStudentsByCriteria(StudentSearchCriteriaDto criteriaDto);
 }
