@@ -8,7 +8,7 @@ import pl.school.service.student.StudentService;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/student")
 @RequiredArgsConstructor
@@ -42,4 +42,13 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
 
+    @PutMapping("/put/teacher/{id}")
+    public StudentDto addTeacherToList(@RequestBody StudentDto studentDto, @PathVariable Long id){
+        return studentService.addTeacherToList(studentDto,id);
+    }
+
+    @DeleteMapping("/delete/teacher/{id}")
+    public StudentDto deleteTeacherFromList(@RequestBody StudentDto studentDto, @PathVariable Long id) {
+        return studentService.removeTeacherFromList(studentDto, id);
+    }
 }

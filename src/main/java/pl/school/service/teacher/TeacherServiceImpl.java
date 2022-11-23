@@ -10,8 +10,10 @@ import pl.school.exception.exceptions.RecordNotFoundException;
 import pl.school.model.dto.TeacherDto;
 import pl.school.model.entity.Teacher;
 import pl.school.model.mapper.TeacherMapper;
+import pl.school.repository.StudentRepository;
 import pl.school.repository.TeacherRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -24,12 +26,16 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherMapper teacherMapper;
 
+    private final StudentRepository studentRepository;
+
     @Override
+    @Transactional
     public TeacherDto saveTeacher(TeacherDto teacherDto) {
         return teacherMapper.toDto(teacherRepository.save(teacherMapper.toNewEntity(teacherDto)));
     }
 
     @Override
+    @Transactional
     public TeacherDto updateTeacher(TeacherDto teacherDto) {
         return teacherRepository.findById(teacherDto.getId()).map(teacher -> {
             teacher.setName(teacherDto.getName());
@@ -43,6 +49,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    @Transactional
     public TeacherDto updatePartialTeacher(TeacherDto teacherDto) {
         return teacherRepository.findById(teacherDto.getId()).map(teacher -> {
             if (Objects.nonNull(teacherDto.getName())) {
@@ -64,10 +71,11 @@ public class TeacherServiceImpl implements TeacherService {
                 teacher.setStudents(teacherMapper.toNewEntity(teacherDto).getStudents());
             }
             return teacherMapper.toDto(teacher);
-        }).orElseThrow(() -> new RecordNotFoundException("Teacher",teacherDto.getId()));
+        }).orElseThrow(() -> new RecordNotFoundException("Teacher", teacherDto.getId()));
     }
 
     @Override
+    @Transactional
     public void deleteTeacher(Long id) {
         teacherRepository.deleteById(id);
     }
@@ -76,8 +84,28 @@ public class TeacherServiceImpl implements TeacherService {
     public List<TeacherDto> getAllTeachers(Integer pageNumber,
                                            Integer pageSize,
                                            String sortBy) {
-        Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy));
-       Page<Teacher> teachers = teacherRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        Page<Teacher> teachers = teacherRepository.findAll(pageable);
         return teachers.getContent().stream().map(teacherMapper::toDto).collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public TeacherDto addStudentToList(TeacherDto teacherDto, Long id) {
+        return teacherRepository.findById(teacherDto.getId()).map(teacher -> {
+            teacher.getStudents().add(studentRepository.findById(id)
+                    .orElseThrow(() -> new RecordNotFoundException("Student", id)));
+            return teacherMapper.toDto(teacher);
+        }).orElseThrow(() -> new RecordNotFoundException("Teacher", teacherDto.getId()));
+    }
+
+    @Override
+    public TeacherDto removeStudentFromList(TeacherDto teacherDto, Long id) {
+        return teacherRepository.findById(teacherDto.getId()).map(teacher -> {
+            teacher.getStudents().remove(studentRepository.findById(id)
+                    .orElseThrow(() -> new RecordNotFoundException("Student", id)));
+            return teacherMapper.toDto(teacher);
+        }).orElseThrow(() -> new RecordNotFoundException("Teacher", teacherDto.getId()));
+    }
 }
+

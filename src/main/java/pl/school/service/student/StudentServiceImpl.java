@@ -11,6 +11,7 @@ import pl.school.model.dto.StudentDto;
 import pl.school.model.entity.Student;
 import pl.school.model.mapper.StudentMapper;
 import pl.school.repository.StudentRepository;
+import pl.school.repository.TeacherRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -24,6 +25,8 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
     private final StudentMapper studentMapper;
+
+    private final TeacherRepository teacherRepository;
 
     @Override
     @Transactional
@@ -42,7 +45,7 @@ public class StudentServiceImpl implements StudentService {
             student.setField(studentDto.getField());
             student.setTeachers(studentMapper.toNewEntity(studentDto).getTeachers());
             return studentMapper.toDto(student);
-        }).orElseThrow(() -> new RecordNotFoundException("Student",studentDto.getId()));
+        }).orElseThrow(() -> new RecordNotFoundException("Student", studentDto.getId()));
     }
 
     @Override
@@ -68,7 +71,7 @@ public class StudentServiceImpl implements StudentService {
                 student.setTeachers(studentMapper.toNewEntity(studentDto).getTeachers());
             }
             return studentMapper.toDto(student);
-        }).orElseThrow(()->new RecordNotFoundException("Student",studentDto.getId()));
+        }).orElseThrow(() -> new RecordNotFoundException("Student", studentDto.getId()));
     }
 
     @Override
@@ -81,8 +84,27 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentDto> getAllStudents(Integer pageNumber,
                                            Integer pageSize,
                                            String sortBy) {
-        Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         Page<Student> students = studentRepository.findAll(pageable);
         return students.getContent().stream().map(studentMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public StudentDto addTeacherToList(StudentDto studentDto, Long id) {
+        return studentRepository.findById(studentDto.getId()).map(student -> {
+            student.getTeachers().add(teacherRepository.findById(id)
+                    .orElseThrow(() -> new RecordNotFoundException("Teacher", id)));
+            return studentMapper.toDto(student);
+        }).orElseThrow(() -> new RecordNotFoundException("Student", studentDto.getId()));
+    }
+
+    @Override
+    public StudentDto removeTeacherFromList(StudentDto studentDto, Long id) {
+        return studentRepository.findById(studentDto.getId()).map(student -> {
+            student.getTeachers().remove(teacherRepository.findById(id)
+                    .orElseThrow(() -> new RecordNotFoundException("Teacher", id)));
+            return studentMapper.toDto(student);
+        }).orElseThrow(() -> new RecordNotFoundException("Student", studentDto.getId()));
     }
 }
