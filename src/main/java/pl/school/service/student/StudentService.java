@@ -1,6 +1,5 @@
 package pl.school.service.student;
 
-import org.springframework.data.domain.Pageable;
 import pl.school.model.dto.StudentDto;
 
 import java.util.List;
@@ -18,5 +17,7 @@ public interface StudentService {
     List<StudentDto> getAllStudents(Integer pageNumber,
                                     Integer pageSize, String sortBy);
 
+    StudentDto addTeacherToList(StudentDto studentDto, Long id);
 
+    StudentDto removeTeacherFromList(StudentDto studentDto, Long id);
 }
