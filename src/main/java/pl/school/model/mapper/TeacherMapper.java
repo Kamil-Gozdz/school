@@ -2,8 +2,9 @@ package pl.school.model.mapper;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import pl.school.model.dto.StudentDto;
-import pl.school.model.dto.TeacherDto;
+import pl.school.model.dto.student.StudentDetailsDto;
+import pl.school.model.dto.teacher.TeacherDetailsDto;
+import pl.school.model.dto.teacher.TeacherDto;
 import pl.school.model.entity.Student;
 import pl.school.model.entity.Teacher;
 
@@ -29,9 +30,16 @@ public class TeacherMapper {
                 .students(getStudents(teacher.getStudents()))
                 .build();
     }
+    public TeacherDetailsDto toDetailsDto(Teacher teacher) {
+        return TeacherDetailsDto.builder()
+                .id(teacher.getId())
+                .name(teacher.getName())
+                .surname(teacher.getSurname())
+                .build();
+    }
 
-    private Set<StudentDto> getStudents(Set<Student> students) {
-        return students.stream().map(studentMapper::toDto).collect(Collectors.toSet());
+    private Set<StudentDetailsDto> getStudents(Set<Student> students) {
+        return students.stream().map(studentMapper::toDetailsDto).collect(Collectors.toSet());
     }
 
     public Teacher toNewEntity(TeacherDto teacherDto) {
@@ -45,8 +53,15 @@ public class TeacherMapper {
                 .students(getStudentsDto(teacherDto.getStudents()))
                 .build();
     }
+    public Teacher toDetailsEntity(TeacherDetailsDto teacherDetailsDto) {
+        return Teacher.builder()
+                .id(teacherDetailsDto.getId())
+                .name(teacherDetailsDto.getName())
+                .surname(teacherDetailsDto.getSurname())
+                .build();
+    }
 
-    private Set<Student> getStudentsDto(Set<StudentDto> studentsDto) {
-        return studentsDto.stream().map(studentMapper::toNewEntity).collect(Collectors.toSet());
+    private Set<Student> getStudentsDto(Set<StudentDetailsDto> studentsDetailsDto) {
+        return studentsDetailsDto.stream().map(studentMapper::toDetailsEntity).collect(Collectors.toSet());
     }
 }

@@ -2,12 +2,15 @@ package pl.school.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.school.model.dto.TeacherDto;
-import pl.school.model.dto.TeacherSearchCriteriaDto;
+import pl.school.model.dto.student.StudentDetailsDto;
+import pl.school.model.dto.student.StudentDto;
+import pl.school.model.dto.teacher.TeacherDto;
+import pl.school.model.dto.teacher.TeacherSearchCriteriaDto;
 import pl.school.service.teacher.TeacherService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -17,7 +20,7 @@ public class TeacherController {
 
     private final TeacherService teacherService;
 
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     public List<TeacherDto> getTeachers(@RequestParam(defaultValue = "1") Integer pageNumber,
                                         @RequestParam(defaultValue = "2") Integer pageSize,
                                         @RequestParam(defaultValue = "id") String sortBy) {
@@ -56,5 +59,9 @@ public class TeacherController {
     @PostMapping("/search")
     public List<TeacherDto> searchTeachersByCriteria(@RequestBody TeacherSearchCriteriaDto criteriaDto){
         return teacherService.getTeachersByCriteria(criteriaDto);
+    }
+    @GetMapping("/get/students")
+    public Set<StudentDetailsDto> getAssignedStudents(@RequestBody TeacherDto teacherDto){
+        return teacherService.getAssignedStudents(teacherDto);
     }
 }

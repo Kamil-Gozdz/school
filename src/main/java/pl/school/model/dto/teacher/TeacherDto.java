@@ -1,6 +1,8 @@
-package pl.school.model.dto;
+package pl.school.model.dto.teacher;
 
 import lombok.*;
+import pl.school.model.dto.student.StudentDetailsDto;
+import pl.school.model.dto.student.StudentDto;
 import pl.school.model.enums.SubjectEnum;
 
 import javax.validation.constraints.Email;
@@ -27,5 +29,5 @@ public class TeacherDto {
 
     private SubjectEnum subject;
 
-    private Set<StudentDto> students;
+    private Set<StudentDetailsDto> students;
 }

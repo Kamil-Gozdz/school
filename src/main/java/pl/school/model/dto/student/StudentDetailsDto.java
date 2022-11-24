@@ -1,16 +1,18 @@
-package pl.school.model.dto;
+package pl.school.model.dto.student;
+
 
 import lombok.*;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherSearchCriteriaDto {
+@Builder
+public class StudentDetailsDto {
+
+    Long id;
 
     String name;
 
     String surname;
-
 }

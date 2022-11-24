@@ -8,16 +8,20 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.school.exception.exceptions.RecordNotFoundException;
-import pl.school.model.dto.StudentDto;
-import pl.school.model.dto.StudentSearchCriteriaDto;
+import pl.school.model.dto.student.StudentDto;
+import pl.school.model.dto.student.StudentSearchCriteriaDto;
+import pl.school.model.dto.teacher.TeacherDetailsDto;
 import pl.school.model.entity.Student;
+import pl.school.model.entity.Teacher;
 import pl.school.model.mapper.StudentMapper;
+import pl.school.model.mapper.TeacherMapper;
 import pl.school.repository.StudentRepository;
 import pl.school.repository.TeacherRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +31,8 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
     private final StudentMapper studentMapper;
+
+    private final TeacherMapper teacherMapper;
 
     private final TeacherRepository teacherRepository;
 
@@ -102,6 +108,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional
     public StudentDto removeTeacherFromList(StudentDto studentDto, Long id) {
         return studentRepository.findById(studentDto.getId()).map(student -> {
             student.getTeachers().remove(teacherRepository.findById(id)
@@ -115,5 +122,13 @@ public class StudentServiceImpl implements StudentService {
         Specification<Student> specification = new StudentSpecification(criteriaDto);
         List<Student> students = studentRepository.findAll(specification);
         return  students.stream().map(studentMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<TeacherDetailsDto> getAssignedTeachers(StudentDto studentDto) {
+        return studentRepository.findById(studentDto.getId()).map(student -> {
+             Set<Teacher> teachers = studentMapper.toNewEntity(studentDto).getTeachers();
+            return teachers.stream().map(teacherMapper::toDetailsDto).collect(Collectors.toSet());
+        }).orElseThrow(() -> new RecordNotFoundException("Student", studentDto.getId()));
     }
 }

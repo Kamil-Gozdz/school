@@ -2,7 +2,7 @@ package pl.school.service.student;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import pl.school.model.dto.StudentSearchCriteriaDto;
+import pl.school.model.dto.student.StudentSearchCriteriaDto;
 import pl.school.model.entity.Student;
 
 import javax.persistence.criteria.CriteriaBuilder;

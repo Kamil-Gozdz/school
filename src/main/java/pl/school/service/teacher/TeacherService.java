@@ -1,10 +1,12 @@
 package pl.school.service.teacher;
 
-import org.springframework.data.domain.Pageable;
-import pl.school.model.dto.TeacherDto;
-import pl.school.model.dto.TeacherSearchCriteriaDto;
+import pl.school.model.dto.student.StudentDetailsDto;
+import pl.school.model.dto.student.StudentDto;
+import pl.school.model.dto.teacher.TeacherDto;
+import pl.school.model.dto.teacher.TeacherSearchCriteriaDto;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TeacherService {
 
@@ -25,6 +27,8 @@ public interface TeacherService {
     TeacherDto removeStudentFromList(TeacherDto teacherDto, Long id);
 
     List<TeacherDto> getTeachersByCriteria(TeacherSearchCriteriaDto criteriaDto);
+
+    Set<StudentDetailsDto> getAssignedStudents(TeacherDto teacherDto);
 
 
 }

@@ -2,8 +2,9 @@ package pl.school.model.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.school.model.dto.StudentDto;
-import pl.school.model.dto.TeacherDto;
+import pl.school.model.dto.student.StudentDetailsDto;
+import pl.school.model.dto.student.StudentDto;
+import pl.school.model.dto.teacher.TeacherDetailsDto;
 import pl.school.model.entity.Student;
 import pl.school.model.entity.Teacher;
 
@@ -28,9 +29,16 @@ public class StudentMapper {
                 .teachers(getTeachers(student.getTeachers()))
                 .build();
     }
+    public StudentDetailsDto toDetailsDto(Student student) {
+        return StudentDetailsDto.builder()
+                .id(student.getId())
+                .name(student.getName())
+                .surname(student.getSurname())
+                .build();
+    }
 
-    private Set<TeacherDto> getTeachers(Set<Teacher> teachers) {
-        return teachers.stream().map(teacherMapper::toDto).collect(Collectors.toSet());
+    private Set<TeacherDetailsDto> getTeachers(Set<Teacher> teachers) {
+        return teachers.stream().map(teacherMapper::toDetailsDto).collect(Collectors.toSet());
     }
 
     public Student toNewEntity(StudentDto studentDto) {
@@ -44,8 +52,15 @@ public class StudentMapper {
                 .teachers(getTeachersDto(studentDto.getTeachers()))
                 .build();
     }
+    public Student toDetailsEntity(StudentDetailsDto studentDetailsDto) {
+        return Student.builder()
+                .id(studentDetailsDto.getId())
+                .name(studentDetailsDto.getName())
+                .surname(studentDetailsDto.getSurname())
+                .build();
+    }
 
-    private Set<Teacher> getTeachersDto(Set<TeacherDto> teachersDto) {
-        return teachersDto.stream().map(teacherMapper::toNewEntity).collect(Collectors.toSet());
+    private Set<Teacher> getTeachersDto(Set<TeacherDetailsDto> teachersDetailsDto) {
+        return teachersDetailsDto.stream().map(teacherMapper::toDetailsEntity).collect(Collectors.toSet());
     }
 }
