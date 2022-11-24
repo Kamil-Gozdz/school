@@ -20,8 +20,8 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/get/all")
-    public List<StudentDto> getStudents(@RequestParam(defaultValue = "1") Integer pageNumber,
-                                        @RequestParam(defaultValue = "2") Integer pageSize,
+    public List<StudentDto> getStudents(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                        @RequestParam(defaultValue = "10") Integer pageSize,
                                         @RequestParam(defaultValue = "id") String sortBy) {
 
         return studentService.getAllStudents(pageNumber,pageSize,sortBy);

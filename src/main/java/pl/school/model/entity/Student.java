@@ -1,7 +1,6 @@
 package pl.school.model.entity;
 
 import lombok.*;
-import org.springframework.stereotype.Component;
 import pl.school.model.enums.FieldEnum;
 
 import javax.persistence.*;
@@ -12,7 +11,6 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "students")
-@Component
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student {
